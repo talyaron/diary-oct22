@@ -38,7 +38,6 @@ app.use(express.json());
 import usersRoutes from "./api/users/usersRoutes";
 app.use("/api/users", usersRoutes);
 
-
 //static file
 app.use(express.static("./client"));
 

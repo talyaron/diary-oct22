@@ -1,7 +1,10 @@
 import express, { Router } from 'express'
-import { getUsers } from './usersControls';
+import { addUser, getUsers, searchUserById } from './usersControls';
 const router = express.Router()
 
-router.get('/get-users', getUsers);
+router
+.get('/get-users', getUsers)
+.get('/search-users-by-id', searchUserById)
+.post('/add-user', addUser)
 
 export default router;
