@@ -20,6 +20,7 @@ export const  connection = mysql.createConnection({
 
 connection.connect( (error: any)=> {
   if (error) {
+    console.log(error);
     console.log("MySQL connection error");
   } else {
     console.log("MySQL connection succeeded");
