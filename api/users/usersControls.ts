@@ -17,11 +17,13 @@ export async function getUsers(req: any, res: any) {
     res.status(500).send({ error: error.message });
   }
 }
-export async function createUser(req: any, res: any) {
+
+export async function addUser(req: any, res: any) {
   try {
     const { name } = req.body;
-
-    const query = `INSERT INTO users (name) values ("${name}")`;
+    console.log(name);
+    if (!name) throw new Error("name are required");
+    const query = `INSERT INTO users (name) VALUES ("${name}")`;
     connection.query(query, (error: any, result: any) => {
       console.log(error);
       if (error) throw new Error("error in query");
@@ -35,6 +37,23 @@ export async function createUser(req: any, res: any) {
   }
 }
 
+export async function searchUserById(req: any, res: any) {
+  try {
+    const { user_id } = req.query;
+    console.log(user_id);
+    if (!user_id) throw new Error("user id are required");
+    const query = `SELECT * FROM users WHERE user_id LIKE = %("${user_id}")%`;
+    connection.query(query, (error: any, result: any) => {
+      console.log(error);
+      if (error) throw new Error("error in query");
+
+      console.log("query result", result);
+      res.send({ users: result });
+    });
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).send({ error: error.message });
+  }
 export async function deleteUser(req: any, res: any) {
   try {
     const { id } = req.body;
