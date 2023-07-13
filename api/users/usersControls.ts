@@ -43,7 +43,7 @@ export async function searchUserById(req: any, res: any) {
     console.log(user_id);
     if (!user_id) throw new Error("user id are required");
     const query = `SELECT * FROM users
-    WHERE user_id LIKE '%${user_id}%'`; 
+    WHERE user_id LIKE '%${user_id}%' LIMIT 1`; 
     connection.query(query, (error: any, result: any) => {
       console.log(error);
       if (error) throw new Error("error in query");
