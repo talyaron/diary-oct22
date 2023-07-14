@@ -54,6 +54,7 @@ export async function searchUserById(req: any, res: any) {
     console.error(error);
     res.status(500).send({ error: error.message });
   }
+}
 export async function deleteUser(req: any, res: any) {
   try {
     const { id } = req.body;
