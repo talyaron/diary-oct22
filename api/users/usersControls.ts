@@ -39,10 +39,11 @@ export async function addUser(req: any, res: any) {
 
 export async function searchUserById(req: any, res: any) {
   try {
-    const { user_id } = req.query;
+    const { user_id } = req.body;
     console.log(user_id);
     if (!user_id) throw new Error("user id are required");
-    const query = `SELECT * FROM users WHERE user_id LIKE = %("${user_id}")%`;
+    const query = `SELECT * FROM users
+    WHERE user_id LIKE '%${user_id}%' LIMIT 1`; 
     connection.query(query, (error: any, result: any) => {
       console.log(error);
       if (error) throw new Error("error in query");
