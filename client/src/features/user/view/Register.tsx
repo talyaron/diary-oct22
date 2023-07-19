@@ -4,7 +4,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { FormEvent, useState } from "react";
 import { useAppDispatch } from "../../../model/hooks";
-import { addUser } from "../model/userSlice";
+// import { addUser } from "../model/userSlice";
+import { registerAsync } from "../controlers/userAPI";
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +16,7 @@ const Register = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    dispatch(addUser({ name: userName, password }));
+    dispatch(registerAsync({ name: userName, password }));
     setPassword("");
     setUserName("");
   };

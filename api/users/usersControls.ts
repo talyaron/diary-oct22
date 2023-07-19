@@ -20,17 +20,34 @@ export async function getUsers(req: any, res: any) {
 
 export async function addUser(req: any, res: any) {
   try {
-    const { name } = req.body;
-    console.log(name);
-    if (!name) throw new Error("name are required");
-    const query = `INSERT INTO users (name) VALUES ("${name}")`;
-    connection.query(query, (error: any, result: any) => {
-      console.log(error);
+    const { name, password } = req.body;
+    console.log(name, password);
+    if (!name) throw new Error("name is required");
+    if (!password) throw new Error("password is required");
+
+    //check if such user allready exist
+    const query1 = `SELECT * FROM users WHERE name='${name}'`;
+    connection.query(query1, (error: any, result: any) => {
+
       if (error) throw new Error("error in query");
 
       console.log("query result", result);
-      res.send({ users: result });
+      if (result.length === 0) {
+        console.log("registering new user");
+        const query2 = `INSERT INTO users (name, password) VALUES ("${name}", "${password}")`;
+        connection.query(query2, (error: any, result: any) => {
+          console.log(error);
+          if (error) throw new Error("error in query");
+
+          console.log("query result", result);
+          res.send({ user: {name,password} });
+        });
+      } else {
+        res.send({ error: "user allready exist" });
+      }
     });
+
+
   } catch (error: any) {
     console.error(error);
     res.status(500).send({ error: error.message });
@@ -43,7 +60,7 @@ export async function searchUserById(req: any, res: any) {
     console.log(user_id);
     if (!user_id) throw new Error("user id are required");
     const query = `SELECT * FROM users
-    WHERE user_id LIKE '%${user_id}%' LIMIT 1`; 
+    WHERE user_id LIKE '%${user_id}%' LIMIT 1`;
     connection.query(query, (error: any, result: any) => {
       console.log(error);
       if (error) throw new Error("error in query");
